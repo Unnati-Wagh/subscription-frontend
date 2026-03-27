@@ -103,10 +103,15 @@ function ForgotPassword() {
       setPasswordError("Please fill in both fields.");
       return;
     }
-    if (newPassword.length < 8) {
-      setPasswordError("Password must be at least 8 characters.");
+    
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+      setPasswordError(
+        "Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character."
+      );
       return;
     }
+    
     if (newPassword !== confirmPassword) {
       setPasswordError("Passwords do not match.");
       return;

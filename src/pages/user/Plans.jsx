@@ -265,7 +265,12 @@ function Plans() {
     ENTERPRISE: { text: "#92400e", bg: "#fef3c7" },
   };
 
-  const activePlans = plans.filter((p) => p.active);
+  // ✅ After — always sorts Basic → Pro → Enterprise
+const TIER_ORDER = { BASIC: 1, PRO: 2, ENTERPRISE: 3 };
+
+const activePlans = plans
+  .filter((p) => p.active)
+  .sort((a, b) => (TIER_ORDER[a.tier] ?? 99) - (TIER_ORDER[b.tier] ?? 99));
 
   return (
     <div>

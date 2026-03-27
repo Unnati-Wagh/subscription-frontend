@@ -40,10 +40,14 @@ function ChangePassword() {
       setError('Please enter a new password.')
       return false
     }
-    if (newPassword.length < 8) {
-      setError('New password must be at least 8 characters.')
-      return false
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+      setPasswordError(
+        "Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character."
+      );
+      return;
     }
+    
     if (newPassword === oldPassword) {
       setError('New password must be different from your current password.')
       return false

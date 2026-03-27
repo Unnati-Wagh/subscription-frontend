@@ -10,7 +10,7 @@ const api = axios.create({
   //   'ngrok-skip-browser-warning': 'true',
   // },
  // withCredentials: true,
-  baseURL: 'https://43.204.19.1:1234/',
+  baseURL: 'http://13.232.155.217:1234',
   headers:{
     'Content-Type': 'application/json' ,
   },

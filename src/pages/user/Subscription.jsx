@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import toast, { Toaster } from "react-hot-toast";
 import {
   cancelSubscriptionAPI,
   getMyActivePlanAPI,
@@ -14,7 +15,7 @@ function Subscription() {
   const [sub, setSub] = useState(null);
   const [showCancel, setShowCancel] = useState(false);
   const [cancelled, setCancelled] = useState(false);
-
+  const [autoRenew, setAutoRenew] = useState(true);
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
@@ -22,7 +23,7 @@ function Subscription() {
       setFetching(true);
       try {
         const data = await getMyActivePlanAPI();
-        
+
         if (!data || !data.planId || !data.planName) {
           setSub(null);
           sessionStorage.removeItem(`smp_subscription_${user?.email}`);
@@ -38,12 +39,13 @@ function Subscription() {
           startDate: data.startDate,
           renewalDate: data.endDate,
           daysRemaining: data.daysRemaining,
-          autoRenew: data.autoRenew,
+          autoRenew: data.autoRenew ?? true,
           tier: data.tier,
           status: data.status,
         };
 
         setSub(subscription);
+        setAutoRenew(subscription.autoRenew);
 
         // Keep sessionStorage in sync for other pages
         sessionStorage.setItem(
@@ -69,6 +71,27 @@ function Subscription() {
     };
     fetchSubscription();
   }, [user]);
+  // 2. Handle Toggle Logic
+  const handleToggleAutoRenew = async () => {
+    const previousState = autoRenew;
+    const newState = !autoRenew;
+
+    setAutoRenew(newState); // Optimistic UI update
+
+    try {
+      // Replace with your actual API call, e.g., updateAutoRenewAPI(sub.subId, newState)
+      // await updateAutoRenewAPI(sub.subId, newState);
+
+      if (newState) {
+        toast.success("Auto-renew turned ON");
+      } else {
+        toast.error("Auto-renew turned OFF", { icon: "⚠️" });
+      }
+    } catch (err) {
+      setAutoRenew(previousState); // Revert if API fails
+      toast.error("Failed to update auto-renew settings");
+    }
+  };
 
   const [cancelling, setCancelling] = useState(false);
   const [cancelError, setCancelError] = useState("");
@@ -112,6 +135,7 @@ function Subscription() {
     return (
       <div>
         <UserNavbar />
+        
         <div className="user-shell">
           <UserSidebar />
           <main className="user-content">
@@ -251,15 +275,34 @@ function Subscription() {
                     </div>
                   </div>
                   <div className="sub-info-item">
-                    <div className="sub-info-label">Status</div>
+                    <div className="sub-info-label">Auto-Renew</div>
                     <div
                       className="sub-info-value"
                       style={{
-                        fontSize: "15px",
-                        color: "#10b981",
+                        display: "flex",
+                        alignItems: "center",
+                        marginTop: "4px",
                       }}
                     >
-                      ● Active
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={autoRenew}
+                          onChange={handleToggleAutoRenew}
+                        />
+                        <span className="slider round"></span>
+                      </label>
+                      <span
+                        style={{
+                          marginLeft: "10px",
+                          fontSize: "13px",
+                          color: autoRenew
+                            ? "var(--brand)"
+                            : "var(--text-light)",
+                        }}
+                      >
+                        {autoRenew ? "Enabled" : "Disabled"}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -392,6 +435,7 @@ function Subscription() {
           </div>
         </div>
       )}
+      <Toaster position="top-right" />
     </div>
   );
 }
