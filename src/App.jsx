@@ -12,10 +12,10 @@ import ForgotPassword from "./pages/ForgotPassword";
 // Admin pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ManagePlans from "./pages/admin/ManagePlans";
-import AdminPayments from "./pages/admin/AdminPayments";
+// import AdminPayments from "./pages/admin/AdminPayments";
 import Analytics from "./pages/admin/Analytics";
 import ManageUsers from "./pages/admin/ManageUsers";
-
+import AdminPaymentHistory from "./pages/admin/AdminPaymentHistory";
 // User pages
 
 import UserDashboard from "./pages/user/UserDashboard";
@@ -69,14 +69,12 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          {/* Admin payments */}
           <Route
             path="/admin/payments"
             element={
               <ProtectedRoute allowedRole="admin">
                 <PageTransition>
-                  <AdminPayments />
+                  <AdminPaymentHistory />
                 </PageTransition>
               </ProtectedRoute>
             }

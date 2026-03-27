@@ -138,7 +138,7 @@ function BillingHistory() {
                     <th>Currency</th>
                     <th>Status</th>
                     <th>Date</th>
-                    <th>Session ID</th>
+                   
                   </tr>
                 </thead>
                 <tbody>
@@ -177,15 +177,7 @@ function BillingHistory() {
                         <td style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                           {formatDate(tx.createdAt)}
                         </td>
-                        <td style={{
-                          fontSize: '11px', color: 'var(--text-light)',
-                          maxWidth: '120px', overflow: 'hidden',
-                          textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                        }}
-                          title={tx.stripeSessionId}
-                        >
-                          {tx.stripeSessionId || '—'}
-                        </td>
+                        
                       </tr>
                     )
                   })}

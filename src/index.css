@@ -1600,3 +1600,40 @@ div[style*="position: fixed"][style*="right: 28px"] {
               color 0.15s ease !important;
 }
 
+.table-container {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.admin-table th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+.admin-table tr {
+  border-bottom: 1px solid #eee;
+}
+
+.status-success {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.status-failed {
+  color: #dc2626;
+  font-weight: 600;
+}

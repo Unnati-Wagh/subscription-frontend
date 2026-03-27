@@ -4,16 +4,16 @@ import axios from 'axios'
 // All API calls will be prefixed with this automatically.
 // Change this one line when you deploy to AWS.
 const api = axios.create({
-  baseURL: 'https://dolorimetric-prosaically-constance.ngrok-free.dev',
-  headers: {
-    'Content-Type': 'application/json' ,
-    'ngrok-skip-browser-warning': 'true',
-  },
- // withCredentials: true,
-  // baseURL: 'http://192.168.0.147:1234',
-  // headers:{
+  // baseURL: 'https://dolorimetric-prosaically-constance.ngrok-free.dev',
+  // headers: {
   //   'Content-Type': 'application/json' ,
+  //   'ngrok-skip-browser-warning': 'true',
   // },
+ // withCredentials: true,
+  baseURL: 'http://43.204.19.1:1234/',
+  headers:{
+    'Content-Type': 'application/json' ,
+  },
 })
 
 // ── Request interceptor ──────────────────────────────────────
