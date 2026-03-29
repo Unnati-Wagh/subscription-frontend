@@ -1,8 +1,5 @@
 import axios from 'axios'
 
-// ── Base URL ─────────────────────────────────────────────────
-// All API calls will be prefixed with this automatically.
-// Change this one line when you deploy to AWS.
 const api = axios.create({
   // baseURL: 'https://dolorimetric-prosaically-constance.ngrok-free.dev',
   // headers: {
@@ -10,15 +7,12 @@ const api = axios.create({
   //   'ngrok-skip-browser-warning': 'true',
   // },
  // withCredentials: true,
-  baseURL: 'http://13.232.155.217:1234',
+  baseURL: 'http://43.204.19.1:1234',
   headers:{
     'Content-Type': 'application/json' ,
   },
 })
 
-// ── Request interceptor ──────────────────────────────────────
-// Before EVERY request goes out, this runs automatically.
-// It reads the JWT token from sessionStorage and attaches it.
 api.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem('smp_token')
@@ -31,9 +25,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 )
 
-// ── Response interceptor ─────────────────────────────────────
-// If the server returns 401 (token expired / invalid),
-// automatically clear the session and redirect to login.
 api.interceptors.response.use(
   (response) => response,
   (error) => {

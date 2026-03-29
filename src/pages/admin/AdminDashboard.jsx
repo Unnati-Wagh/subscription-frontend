@@ -144,8 +144,6 @@ function AdminDashboard() {
       ]
     : [];
 
-  
-
   return (
     <div>
       <AdminNavbar />
@@ -415,20 +413,17 @@ function AdminDashboard() {
                   No subscriptions yet
                 </div>
               ) : (
-                <ResponsiveContainer width="100%" height={220}>
+                <ResponsiveContainer width="100%" height={260}>
                   <PieChart>
                     <Pie
                       data={distributionData}
                       cx="50%"
-                      cy="50%"
+                      cy="45%"
                       innerRadius={60}
                       outerRadius={90}
                       paddingAngle={3}
                       dataKey="value"
-                      label={({ name, percentage }) =>
-                        `${name} ${percentage != null ? percentage + "%" : ""}`
-                      }
-                      labelLine={false}
+                      // ✅ No label prop — removes all overlapping text on the chart
                     >
                       {distributionData.map((_, i) => (
                         <Cell
@@ -448,14 +443,42 @@ function AdminDashboard() {
                         ];
                       }}
                     />
-                    <Legend />
+                    {/* ✅ Custom legend renders name + % on separate lines, no overlap */}
+                    <Legend
+                      layout="horizontal"
+                      verticalAlign="bottom"
+                      align="center"
+                      iconType="circle"
+                      iconSize={8}
+                      formatter={(value) => {
+                        const item = distributionData.find(
+                          (d) => d.name === value,
+                        );
+                        return (
+                          <span
+                            style={{
+                              fontSize: "12px",
+                              color: "var(--text-mid)",
+                            }}
+                          >
+                            {value}{" "}
+                            <span
+                              style={{
+                                fontWeight: 700,
+                                color: "var(--text-dark)",
+                              }}
+                            >
+                              {item?.percentage ?? 0}%
+                            </span>
+                          </span>
+                        );
+                      }}
+                    />
                   </PieChart>
                 </ResponsiveContainer>
               )}
             </div>
           </div>
-
-          
         </main>
       </div>
     </div>

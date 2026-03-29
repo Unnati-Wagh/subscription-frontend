@@ -263,17 +263,24 @@ function ManagePlans() {
   useEffect(() => {
     fetchAllPlans();
   }, []);
+  
 
+  // ✅ Sort helper — newest first by createdAt
+const sortByLatest = (arr) =>
+  [...arr].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  ); 
+  
   const fetchAllPlans = async () => {
     setLoadingPlans(true);
     try {
       const data = await getAllPlansAPI();
-      setPlans(data);
+      setPlans(sortByLatest(data))
       localStorage.setItem("smp_plans", JSON.stringify(data));
     } catch (err) {
       setFetchError(err.response?.data?.message || "Failed to load plans.");
       const cached = localStorage.getItem("smp_plans");
-      if (cached) setPlans(JSON.parse(cached));
+      if (cached) setPlans(sortByLatest(JSON.parse(cached)));
     } finally {
       setLoadingPlans(false);
     }
@@ -301,7 +308,7 @@ function ManagePlans() {
           features: formData.features,
         });
         const refreshed = await getAllPlansAPI();
-        setPlans(refreshed);
+        setPlans(sortByLatest(refreshed))
         localStorage.setItem("smp_plans", JSON.stringify(refreshed));
         showToast("Plan updated successfully!");
       } catch (err) {
@@ -317,7 +324,7 @@ function ManagePlans() {
       try {
         await createPlanAPI(formData);
         const refreshed = await getAllPlansAPI();
-        setPlans(refreshed);
+       setPlans(sortByLatest(refreshed))
         localStorage.setItem("smp_plans", JSON.stringify(refreshed));
         showToast("Plan created successfully!");
       } catch (err) {
@@ -348,7 +355,7 @@ function ManagePlans() {
         showToast(`"${plan.name}" activated successfully!`);
       }
       const refreshed = await getAllPlansAPI();
-      setPlans(refreshed);
+      setPlans(sortByLatest(refreshed));
       localStorage.setItem("smp_plans", JSON.stringify(refreshed));
       // Update search result if it was the toggled plan
       if (searchResult?.id === id) {
@@ -404,7 +411,7 @@ function ManagePlans() {
       setLoadingPlans(true);
       try {
         const data = await getAllPlansAPI();
-        setPlans(data);
+        setPlans(sortByLatest(data))
         localStorage.setItem("smp_plans", JSON.stringify(data));
       } catch (err) {
         showToast("Failed to load plans.", "error");
@@ -417,7 +424,7 @@ function ManagePlans() {
     setFilterLoading(true);
     try {
       const data = await getPlansByStatusAPI(value); // "true" or "false"
-      setPlans(data);
+        setPlans(sortByLatest(data));
     } catch (err) {
       showToast(
         err.response?.data?.message || "Failed to filter plans.",
